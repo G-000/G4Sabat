@@ -24,40 +24,38 @@
 // ********************************************************************
 //
 //
-/// \file B1RunAction.hh
-/// \brief Definition of the B1RunAction class
+/// \file G4SabatEventAction.hh
+/// \brief Definition of the G4SabatEventAction class
 
-#ifndef B1RunAction_h
-#define B1RunAction_h 1
+#ifndef G4SabatEventAction_h
+#define G4SabatEventAction_h 1
 
-#include "G4UserRunAction.hh"
-#include "G4Accumulable.hh"
+#include "G4UserEventAction.hh"
 #include "globals.hh"
 
-class G4Run;
+class G4SabatRunAction;
 
-/// Run action class
+/// Event action class
 ///
-/// In EndOfRunAction(), it calculates the dose in the selected volume 
-/// from the energy deposit accumulated via stepping and event actions.
-/// The computed dose is then printed on the screen.
 
-class B1RunAction : public G4UserRunAction
+class G4SabatEventAction : public G4UserEventAction
 {
   public:
-    B1RunAction();
-    virtual ~B1RunAction();
+    G4SabatEventAction(G4SabatRunAction* runAction);
+    virtual ~G4SabatEventAction();
 
-    // virtual G4Run* GenerateRun();
-    virtual void BeginOfRunAction(const G4Run*);
-    virtual void   EndOfRunAction(const G4Run*);
+    virtual void BeginOfEventAction(const G4Event* event);
+    virtual void EndOfEventAction(const G4Event* event);
 
-    void AddEdep (G4double edep); 
+    void AddEdep(G4double edep) { fEdep += edep; }
 
   private:
-    G4Accumulable<G4double> fEdep;
-    G4Accumulable<G4double> fEdep2;
+    G4SabatRunAction* fRunAction;
+    G4double     fEdep;
 };
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
 
+    

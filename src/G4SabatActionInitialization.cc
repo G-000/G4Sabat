@@ -24,36 +24,47 @@
 // ********************************************************************
 //
 //
-/// \file B1SteppingAction.hh
-/// \brief Definition of the B1SteppingAction class
+/// \file G4SabatActionInitialization.cc
+/// \brief Implementation of the G4SabatActionInitialization class
 
-#ifndef B1SteppingAction_h
-#define B1SteppingAction_h 1
-
-#include "G4UserSteppingAction.hh"
-#include "globals.hh"
-
-class B1EventAction;
-
-class G4LogicalVolume;
-
-/// Stepping action class
-/// 
-
-class B1SteppingAction : public G4UserSteppingAction
-{
-  public:
-    B1SteppingAction(B1EventAction* eventAction);
-    virtual ~B1SteppingAction();
-
-    // method from the base class
-    virtual void UserSteppingAction(const G4Step*);
-
-  private:
-    B1EventAction*  fEventAction;
-    G4LogicalVolume* fScoringVolume;
-};
+#include "G4SabatActionInitialization.hh"
+#include "G4SabatPrimaryGeneratorAction.hh"
+#include "G4SabatRunAction.hh"
+#include "G4SabatEventAction.hh"
+#include "G4SabatSteppingAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#endif
+G4SabatActionInitialization::G4SabatActionInitialization()
+ : G4VUserActionInitialization()
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+G4SabatActionInitialization::~G4SabatActionInitialization()
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void G4SabatActionInitialization::BuildForMaster() const
+{
+  G4SabatRunAction* runAction = new G4SabatRunAction;
+  SetUserAction(runAction);
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void G4SabatActionInitialization::Build() const
+{
+  SetUserAction(new G4SabatPrimaryGeneratorAction);
+
+  G4SabatRunAction* runAction = new G4SabatRunAction;
+  SetUserAction(runAction);
+  
+  G4SabatEventAction* eventAction = new G4SabatEventAction(runAction);
+  SetUserAction(eventAction);
+  
+  SetUserAction(new G4SabatSteppingAction(eventAction));
+}  
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

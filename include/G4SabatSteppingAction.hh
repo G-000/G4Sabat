@@ -24,35 +24,36 @@
 // ********************************************************************
 //
 //
-/// \file B1DetectorConstruction.hh
-/// \brief Definition of the B1DetectorConstruction class
+/// \file G4SabatSteppingAction.hh
+/// \brief Definition of the G4SabatSteppingAction class
 
-#ifndef B1DetectorConstruction_h
-#define B1DetectorConstruction_h 1
+#ifndef G4SabatSteppingAction_h
+#define G4SabatSteppingAction_h 1
 
-#include "G4VUserDetectorConstruction.hh"
+#include "G4UserSteppingAction.hh"
 #include "globals.hh"
 
-class G4VPhysicalVolume;
+class G4SabatEventAction;
+
 class G4LogicalVolume;
 
-/// Detector construction class to define materials and geometry.
+/// Stepping action class
+/// 
 
-class B1DetectorConstruction : public G4VUserDetectorConstruction
+class G4SabatSteppingAction : public G4UserSteppingAction
 {
   public:
-    B1DetectorConstruction();
-    virtual ~B1DetectorConstruction();
+    G4SabatSteppingAction(G4SabatEventAction* eventAction);
+    virtual ~G4SabatSteppingAction();
 
-    virtual G4VPhysicalVolume* Construct();
-    
-    G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
+    // method from the base class
+    virtual void UserSteppingAction(const G4Step*);
 
-  protected:
-    G4LogicalVolume*  fScoringVolume;
+  private:
+    G4SabatEventAction*  fEventAction;
+    G4LogicalVolume* fScoringVolume;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
