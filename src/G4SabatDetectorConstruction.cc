@@ -73,8 +73,8 @@ G4VPhysicalVolume* G4SabatDetectorConstruction::Construct()
   //     
   // World
   //
-  G4double world_sizeXY = 1.2*env_sizeXY;
-  G4double world_sizeZ  = 1.2*env_sizeZ;
+  G4double world_sizeXY = 1.7*env_sizeXY;
+  G4double world_sizeZ  = 1.7*env_sizeZ;
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
   
   G4Box* solidWorld =    
@@ -126,11 +126,11 @@ G4VPhysicalVolume* G4SabatDetectorConstruction::Construct()
     submarine->setVolumePossition(bottom->getVolumePossition(), bottom->getHeight());
 //    submarine->setVolumePos(G4ThreeVector(0, 0, 0));
 
-  //     
+  //
   // Shape 2
   //
 
-                
+
   // Set Shape2 as scoring volume
   //
   fScoringVolume = submarine->G4SabatSubmarineConstruct(logicEnv, checkOverlaps);;

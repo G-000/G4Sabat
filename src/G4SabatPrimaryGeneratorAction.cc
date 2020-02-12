@@ -56,7 +56,7 @@ G4SabatPrimaryGeneratorAction::G4SabatPrimaryGeneratorAction()
     = particleTable->FindParticle(particleName="neutron");
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  fParticleGun->SetParticleEnergy(600.*MeV);
+  fParticleGun->SetParticleEnergy(14.5*MeV);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -77,21 +77,30 @@ void G4SabatPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   // on DetectorConstruction class we get Envelope volume
   // from G4LogicalVolumeStore.
   
-  G4double submarineWL = 0;
-  G4double submarineH = 0;
+  G4double envZHeight = 0;
 
   if (!fEnvelopeBox)
   {
     G4LogicalVolume* envLV
-      = G4LogicalVolumeStore::GetInstance()->GetVolume("Submarine");
+      = G4LogicalVolumeStore::GetInstance()->GetVolume("Envelope");
     if ( envLV ) fEnvelopeBox = dynamic_cast<G4Box*>(envLV->GetSolid());
   }
 
+    G4LogicalVolume* submarineSourceTubeVolume =
+            G4LogicalVolumeStore::GetInstance()->GetVolume("SourceTube");
+    G4Tubs *submSourceTube =
+            dynamic_cast<G4Tubs*>(submarineSourceTubeVolume->GetSolid());
 
+    G4LogicalVolume* seaBottomVolume =
+            G4LogicalVolumeStore::GetInstance()->GetVolume("Bottom");
+    G4Box *seaBottomBox =
+            dynamic_cast<G4Box*>(seaBottomVolume->GetSolid());
+
+    G4double seaBottomHeigth = seaBottomBox->GetYHalfLength()*2;
+    G4double sourceubeHeight = submSourceTube->GetZHalfLength() * 2;
 
   if ( fEnvelopeBox ) {
-    submarineWL = fEnvelopeBox->GetXHalfLength();
-    submarineH = fEnvelopeBox->GetYHalfLength();
+    envZHeight = fEnvelopeBox->GetYHalfLength();
   }  
   else  {
     G4ExceptionDescription msg;
@@ -102,10 +111,10 @@ void G4SabatPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
      "MyCode0002",JustWarning,msg);
   }
 
-  G4double size = 0.8; 
-  G4double x0 = size * submarineWL;
-  G4double y0 = size * submarineH;
-  G4double z0 = -0.5 * submarineWL;
+//  G4double size = 0.8;
+  G4double x0 = 0; //size * submarineWL;
+  G4double y0 = -envZHeight + seaBottomHeigth + sourceubeHeight;
+  G4double z0 = 0; //-0.5 * submarineWL;
   
   fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
 

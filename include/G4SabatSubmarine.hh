@@ -32,53 +32,6 @@ struct SubmarineBody {
 };
 
 
-
-struct DetectorTube {
-    const G4double innerR = 10*cm;
-    const G4double outerR = 20*cm;
-    const G4double height = 26*cm;
-    SubmarineBody *parent;
-
-    DetectorTube(SubmarineBody *sub);
-    ~DetectorTube();
-
-    G4double x() const;
-    G4double y() const;
-    G4double z() const;
-};
-
-struct Detector {
-    const G4double width = 5*cm;
-    const G4double height = 5*cm;
-    const G4double length = 5*cm;
-    DetectorTube *parent;
-
-    Detector();
-    ~Detector();
-
-    G4double x() const;
-    G4double y() const;
-    G4double z() const;
-};
-
-struct SourceTube {
-    const G4double width = 20*cm;
-    const G4double height = 10*cm;
-    const G4double length = 20*cm;
-    SubmarineBody *parent;
-
-    SourceTube(SubmarineBody *sub);
-    ~SourceTube();
-
-    G4double x() const;
-    G4double y() const;
-    G4double z() const;
-
-    G4double xPos() const;
-    G4double yPos() const;
-    G4double zPos() const;
-};
-
 class G4SabatSubmarine {
 
 private:
@@ -89,8 +42,6 @@ private:
     G4double length;
     //element list
     SubmarineBody *submarine;
-    DetectorTube *detectorTube;
-    SourceTube *sourceTube;
 
     G4ThreeVector volumePos = G4ThreeVector();    //
     G4ThreeVector sourceTubePos = G4ThreeVector();    //

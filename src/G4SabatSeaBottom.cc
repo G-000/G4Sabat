@@ -87,7 +87,7 @@ void G4SabatSeaBottom::G4SabatSeaBottomConstruct(G4LogicalVolume *logicEnv, cons
 {
     G4NistManager* nist = G4NistManager::Instance();
     // Submarine main box
-    G4Material* bottom_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
+    G4Material* bottom_mat = nist->FindOrBuildMaterial("G4_Si");
     G4Box *solidBottom =
             new G4Box("Bottom", seaBottom->x(), seaBottom->y(), seaBottom->z());
     G4LogicalVolume *logicBottom =
@@ -101,7 +101,7 @@ void G4SabatSeaBottom::G4SabatSeaBottomConstruct(G4LogicalVolume *logicEnv, cons
                       false,                   //no boolean operation
                       0,                       //copy number
                       checkOverlaps);          //overlaps checking
-    G4Material* example_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
+    G4Material* example_mat = nist->FindOrBuildMaterial("G4_Au");
     G4Box *solidExample =
             new G4Box("Example", example->x(), example->y(), example->z());
     G4LogicalVolume *logicExample =
